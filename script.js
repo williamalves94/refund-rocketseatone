@@ -1,4 +1,7 @@
 const amount = document.getElementById("amount");
+const expense = document.getElementById("expense");
+const category = document.getElementById("category");
+const form = document.querySelector("form");
 
 // captura o evento de input para formatar o valor
 // oninput dispara sempre que há uma alteração no valor (em tempo real)
@@ -25,3 +28,29 @@ function formatCurrencyBRL(value) {
   // retorna o valor formatado
   return value;
 }
+
+// captura o evento de submit para obter os valores
+form.onsubmit = () => {
+  // previne o comportamento padrão de recarregar a página
+  event.preventDefault();
+
+  // cria um objeto com os detalhes na nova despesa
+  const newExpense = {
+    id: new Date().getTime(),
+    expense: expense.value,
+    category_id: category.value,
+    category_name: category.options[category.selectedIndex].text,
+    amount: amount.value,
+    created_at: new Date(),
+  };
+
+  function expenseAdd() {
+    try {
+      // criando o elemento de li para adicionar o item na lista
+      const expenseItem = document.createElement("li");
+      expenseItem.classList.add("expense");
+    } catch (error) {
+      alert("Não foi possível atualizar a lista de despesas.");
+    }
+  }
+};
