@@ -99,11 +99,15 @@ function expenseAdd(newExpense) {
 
     // adiciona o item na lista
     expenseList.append(expenseItem);
+
+    // limpa os inputs do formulario
+    formClearInputs();
+
+    //atualiza os totais
+    updateTotals();
   } catch (error) {
     alert("Não foi possível atualizar a lista de despesas.");
   }
-
-  updateTotals();
 }
 
 // atualiza os totais
@@ -126,7 +130,7 @@ function updateTotals() {
 
       // remove os caracteres não numéricos usando regexp, e usa o replace() para substituir a virgula pelo ponto.
       let value = itemAmount.textContent
-        .replace(/[^\d]/g, "")
+        .replace(/[^\d,]/g, "")
         .replace(",", ".");
 
       // converte o valor para float
@@ -152,9 +156,36 @@ function updateTotals() {
     // limpa o conteúdo do elemento
     expenseTotal.innerHTML = "";
 
+    // adiciona o simbolo da moeda e o valor total formatado
     expenseTotal.append(symbolBRL, total);
   } catch (error) {
     console.log(error);
     alert("Não foi possivel atualizar os totais");
   }
+}
+
+// evento que captura o clique nos itens da lista
+expenseList.addEventListener("click", function (event) {
+  // verifica se o elemento clicado é o icone de remover
+  if (event.target.classList.contains("remove-icon")) {
+    console.log(event);
+    // obtem a (li) pai do elemento clicado
+    const item = event.target.closest(".expense");
+
+    // remove o item da lista
+    item.remove();
+  }
+
+  // atualiza os totais
+  updateTotals();
+});
+
+// limpa os inputs do formulario
+function formClearInputs() {
+  expense.value = "";
+  category.value = "";
+  amount.value = "";
+
+  // faz com que o usuario consiga digitar novamente
+  expense.focus();
 }
