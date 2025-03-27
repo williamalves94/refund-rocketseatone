@@ -46,10 +46,12 @@ form.onsubmit = () => {
     amount: amount.value,
     created_at: new Date(),
   };
-
+  // passando a função para dentro do form e passando a newExpense para dentro da função para ser criada na li que a expenseAdd criar
+  // A função expenseAdd(newExpense); está sendo chamada dentro do evento onsubmit do formulário porque ela é responsável por adicionar a nova despesa à lista na interface assim que o usuário enviar o formulário.
   expenseAdd(newExpense);
 };
 
+// adiciona um novo item na lista
 function expenseAdd(newExpense) {
   try {
     // criando o elemento de li para adicionar o item na lista
@@ -76,12 +78,38 @@ function expenseAdd(newExpense) {
     // adiciona name e category na div das info das dispesa
     expenseInfo.append(expenseName, expenseCategory);
 
+    // criando o valor da despesa
+    const expenseAmount = document.createElement("span");
+    expenseAmount.classList.add("expense-amount");
+    expenseAmount.innerHTML = `<small>R$</small>${newExpense.amount
+      .toUpperCase()
+      .replace("R$", "")}`;
+
+    // criando icone de remover
+    const removeIcon = document.createElement("img");
+    removeIcon.classList.add("remove-icon");
+    removeIcon.setAttribute("src", "img/remove.svg");
+    removeIcon.setAttribute("alt", "remover");
+
     // adiciona as informações no item
-    expenseItem.append(expenseIcon, expenseInfo);
+    expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeIcon);
 
     // adiciona o item na lista
     expenseList.append(expenseItem);
   } catch (error) {
     alert("Não foi possível atualizar a lista de despesas.");
+  }
+
+  // atualiza os totais
+  updateTotals();
+}
+
+// atualiza os totais
+function updateTotals() {
+  try {
+    const items = expenseList.children;
+  } catch (error) {
+    console.log(error);
+    alert("Não foi possivel atualizar os totais");
   }
 }
